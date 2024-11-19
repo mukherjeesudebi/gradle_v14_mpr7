@@ -6,15 +6,13 @@ import com.vaadin.mpr.core.MprTheme;
 import com.vaadin.mpr.core.MprWidgetset;
 import com.vaadin.navigator.Navigator;
 
-@Route(value = "nav-view", layout = Mainlayout.class)
-@MprWidgetset("AppWidgetset")
-@MprTheme("mytheme")
+@Route(value = "", layout = Mainlayout.class)
 public class MyNavigatorRoute extends MprNavigatorRoute{
 
 	@Override
 	public void configureNavigator(Navigator navigator) {
 		 navigator.addView("UI Scoped View", UIScopedView.class);
-	        navigator.addView("View Scoped View", ViewScopedView.class);
+		 navigator.addView("View Scoped View", ViewScopedView.class);
 		
 	}
 
