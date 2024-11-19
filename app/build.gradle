@@ -1,9 +1,9 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.18'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'java'
-	id 'com.devsoap.plugin.vaadin' version '2.0.0.beta2'
-    id 'com.vaadin' version '0.14.3.7'
+    id 'org.springframework.boot' version '2.7.18'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+    id 'com.devsoap.plugin.vaadin' version '2.0.0.beta2'
+    id 'com.vaadin' version '0.14.8.1'
 }
 
 version = '1.0.2'
@@ -14,56 +14,53 @@ defaultTasks("clean", "build")
 configurations {
     compile.canBeResolved = true // workaround for Vaadin 8 plugin
     runtime.canBeResolved = true // workaround for Vaadin 8 plugin
+
+    configureEach {
+        resolutionStrategy {
+            force 'org.jsoup:jsoup:1.14.3'
+        }
+    }
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
+}
+
+vaadin {
+    version = "7.7.17"
 }
 
 dependencies {
     compile platform('org.springframework.boot:spring-boot-dependencies:2.7.18')
 
-	//implementation 'org.springframework.boot:spring-boot-starter'
-	//testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		//exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	//}
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-   compile('com.vaadin:vaadin-spring-boot-starter') {
-//         Webjars are only needed when running in Vaadin 13 compatibility mode
-		["com.vaadin.webjar", "org.webjars.bowergithub.insites",
-		 "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
-		 "org.webjars.bowergithub.vaadin", "org.webjars.bowergithub.webcomponents"]
-				.forEach { group -> exclude(group: group) }
-	}
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-    compile("com.vaadin:vaadin-core:14.3.7") {
+    compile('com.vaadin:vaadin-spring-boot-starter') {
+        ["com.vaadin.webjar", "org.webjars.bowergithub.insites",
+         "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
+         "org.webjars.bowergithub.vaadin", "org.webjars.bowergithub.webcomponents"]
+                .each { group -> exclude group: group }
+    }
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    compile("com.vaadin:vaadin-core:14.8.1") {
         // Webjars are only needed when running in Vaadin 13 compatibility mode
         ["com.vaadin.webjar", "org.webjars.bowergithub.insites",
-		 "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
-		 "org.webjars.bowergithub.vaadin", "org.webjars.bowergithub.webcomponents"]
-				.forEach { group -> exclude(group: group) }
+         "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
+         "org.webjars.bowergithub.vaadin", "org.webjars.bowergithub.webcomponents"]
+                .each { group -> exclude group: group }
     }
 
-    compile("com.vaadin:mpr-v7:2.2.21")
-    vaadinCompile("com.vaadin:mpr-core:2.2.21"){
-        exclude(group : 'com.vaadin')
-        exclude(group : 'commons-io')
-
+    compile("com.vaadin:mpr-v7:2.1.0")
+    vaadinCompile("com.vaadin:mpr-core:2.1.0") {
+        exclude group: 'com.vaadin'
+        exclude group: 'commons-io'
     }
-    // workaround for https://github.com/johndevs/gradle-vaadin-plugin/issues/536
-    //vaadinCompile("com.vaadin:mpr-core:2.2.21")
-	// {
-        // removes duplicate dependencies: https://gitlab.com/mvysny/vaadin14-mpr-gradle-demo/issues/1
-        //exclude(group = "com.vaadin")
-        //exclude(group = "commons-io")
-    //}
 
     // logging
     // currently we are logging through the SLF4J API to SLF4J-Simple. See src/main/resources/simplelogger.properties file for the logger configuration
@@ -71,24 +68,41 @@ dependencies {
     // this will allow us to configure Vaadin to log to SLF4J
     compile("org.slf4j:jul-to-slf4j:2.0.13")
 
-    // test support
-    // there's no Karibu-Testing for Vaadin 7...
-//    testImplementation("com.github.mvysny.kaributesting:karibu-testing-v8:1.1.26")
-//    testImplementation("com.github.mvysny.kaributesting:karibu-testing-v10:1.1.26")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.0")
 
     // workaround until https://youtrack.jetbrains.com/issue/IDEA-178071 is fixed
-    compile("com.vaadin:vaadin-themes:7.7.44")
-    compile("com.vaadin:vaadin-server:7.7.44")
+    compile("com.vaadin:vaadin-themes") {
+        version {
+            strictly '7.7.17' // Enforces the specific version
+        }
+    }
 
+    compile("com.vaadin:vaadin-server") {
+        version {
+            strictly '7.7.17'
+        }
+        exclude group: 'org.jsoup'
+        exclude group: 'com.google.gwt'
+    }
+    compile("com.vaadin:vaadin-client") {
+        version {
+            strictly '7.7.17'
+        }
+        exclude group: 'org.jsoup'
+        exclude group: 'com.google.gwt'
+    }
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "com.vaadin:vaadin-bom:14.11.13"
-	}
+    imports {
+        mavenBom "com.vaadin:vaadin-bom:14.8.1"
+    }
 }
 
 tasks.named('test', Test) {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+vaadin14 {
+    pnpmEnable = true
 }
