@@ -13,7 +13,6 @@ import com.vaadin.ui.VerticalLayout;
 
 // Pay attention to the order of annotations
 @UIScope
-@Route(value = "ui", layout = Mainlayout.class)
 public class UIScopedView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "ui";
 
