@@ -1,6 +1,6 @@
 plugins {
     id 'org.springframework.boot' version '2.7.18'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'java'
     id 'com.devsoap.plugin.vaadin' version '2.0.0.beta2'
     id 'com.vaadin' version '0.14.8.1'
@@ -17,7 +17,7 @@ configurations {
 
     configureEach {
         resolutionStrategy {
-            force 'org.jsoup:jsoup:1.14.3'
+            force 'org.jsoup:jsoup:1.15.3'
         }
     }
 }
@@ -48,7 +48,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    compile("com.vaadin:vaadin-core:14.8.1") {
+    compile("com.vaadin:vaadin-core:14.10.8") {
         // Webjars are only needed when running in Vaadin 13 compatibility mode
         ["com.vaadin.webjar", "org.webjars.bowergithub.insites",
          "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
@@ -56,8 +56,8 @@ dependencies {
                 .each { group -> exclude group: group }
     }
 
-    compile("com.vaadin:mpr-v7:2.1.0")
-    vaadinCompile("com.vaadin:mpr-core:2.1.0") {
+    compile("com.vaadin:mpr-v7:2.2.1")
+    vaadinCompile("com.vaadin:mpr-core:2.2.1") {
         exclude group: 'com.vaadin'
         exclude group: 'commons-io'
     }
@@ -73,20 +73,20 @@ dependencies {
     // workaround until https://youtrack.jetbrains.com/issue/IDEA-178071 is fixed
     compile("com.vaadin:vaadin-themes") {
         version {
-            strictly '7.7.17' // Enforces the specific version
+            strictly '7.7.41' // Enforces the specific version
         }
     }
 
     compile("com.vaadin:vaadin-server") {
         version {
-            strictly '7.7.17'
+            strictly '7.7.41'
         }
         exclude group: 'org.jsoup'
         exclude group: 'com.google.gwt'
     }
     compile("com.vaadin:vaadin-client") {
         version {
-            strictly '7.7.17'
+            strictly '7.7.41'
         }
         exclude group: 'org.jsoup'
         exclude group: 'com.google.gwt'
@@ -95,7 +95,7 @@ dependencies {
 
 dependencyManagement {
     imports {
-        mavenBom "com.vaadin:vaadin-bom:14.8.1"
+        mavenBom "com.vaadin:vaadin-bom:14.10.8"
     }
 }
 
