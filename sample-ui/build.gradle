@@ -1,0 +1,86 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'com.devsoap.plugin.vaadin'
+    id 'com.vaadin'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('com.vaadin:vaadin-spring-boot-starter') {
+        ["com.vaadin.webjar", "org.webjars.bowergithub.insites",
+         "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
+         "org.webjars.bowergithub.vaadin", "org.webjars.bowergithub.webcomponents"]
+                .each { group -> exclude group: group }
+    }
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    compile("com.vaadin:vaadin-core") {
+        // Webjars are only needed when running in Vaadin 13 compatibility mode
+        ["com.vaadin.webjar", "org.webjars.bowergithub.insites",
+         "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
+         "org.webjars.bowergithub.vaadin", "org.webjars.bowergithub.webcomponents"]
+                .each { group -> exclude group: group }
+    }
+    vaadinCompile("com.vaadin:mpr-core") {
+        exclude group: 'com.vaadin'
+        exclude group: 'commons-io'
+    }
+
+    compile("com.vaadin:mpr-v7")
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // logging
+    // currently we are logging through the SLF4J API to SLF4J-Simple. See src/main/resources/simplelogger.properties file for the logger configuration
+    compile("org.slf4j:slf4j-simple:2.0.13")
+    // this will allow us to configure Vaadin to log to SLF4J
+    compile("org.slf4j:jul-to-slf4j:2.0.13")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.0")
+
+    // workaround until https://youtrack.jetbrains.com/issue/IDEA-178071 is fixed
+    compile("com.vaadin:vaadin-themes:7.7.41")
+            {
+        version {
+            strictly '7.7.41' // Enforces the specific version
+        }
+    }
+    compile("com.vaadin:vaadin-server") {
+        version {
+            strictly '7.7.41'
+        }
+        exclude group: 'org.jsoup'
+        exclude group: 'com.google.gwt'
+    }
+    compile("com.vaadin:vaadin-client") {
+        version {
+            strictly '7.7.41'
+        }
+        exclude group: 'org.jsoup'
+        exclude group: 'com.google.gwt'
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.vaadin:vaadin-bom:14.8.1"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+vaadin14 {
+    pnpmEnable = true
+}
+
+
+description = 'sample-ui'
