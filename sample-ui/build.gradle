@@ -1,16 +1,35 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
-    id 'com.devsoap.plugin.vaadin'
-    id 'com.vaadin'
+    id 'org.springframework.boot' version '2.7.16'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'com.devsoap.plugin.vaadin' version '2.0.0.beta2'
+    id 'com.vaadin' version '0.14.8.1'
 }
+
+group = 'org.gradle.samples'
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
 
 repositories {
     mavenCentral()
 }
 
+configurations {
+    compile.canBeResolved = true // workaround for Vaadin 8 plugin
+    runtime.canBeResolved = true // workaround for Vaadin 8 plugin
+
+    configureEach {
+        resolutionStrategy {
+            force 'org.jsoup:jsoup:1.15.3',
+                    'com.vaadin:vaadin-server:7.7.41',
+                    'com.vaadin:vaadin-client:7.7.41','com.vaadin:vaadin-themes:7.7.41'
+        }
+    }
+}
+
 dependencies {
+    compile platform('com.vaadin:vaadin-bom:14.8.1')
     compile('com.vaadin:vaadin-spring-boot-starter') {
         ["com.vaadin.webjar", "org.webjars.bowergithub.insites",
          "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
@@ -28,20 +47,20 @@ dependencies {
          "org.webjars.bowergithub.vaadin", "org.webjars.bowergithub.webcomponents"]
                 .each { group -> exclude group: group }
     }
-    vaadinCompile("com.vaadin:mpr-core") {
+    vaadinCompile("com.vaadin:mpr-core:2.2.1") {
         exclude group: 'com.vaadin'
         exclude group: 'commons-io'
     }
 
-    compile("com.vaadin:mpr-v7")
+    compile("com.vaadin:mpr-v7:2.2.1")
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // logging
     // currently we are logging through the SLF4J API to SLF4J-Simple. See src/main/resources/simplelogger.properties file for the logger configuration
-    compile("org.slf4j:slf4j-simple:2.0.13")
+    //compile("org.slf4j:slf4j-simple:2.0.13")
     // this will allow us to configure Vaadin to log to SLF4J
-    compile("org.slf4j:jul-to-slf4j:2.0.13")
+   // compile("org.slf4j:jul-to-slf4j:2.0.13")
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.0")
 
@@ -68,18 +87,16 @@ dependencies {
     }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "com.vaadin:vaadin-bom:14.8.1"
-    }
-}
-
 test {
     useJUnitPlatform()
 }
 
 vaadin14 {
     pnpmEnable = true
+}
+
+bootJar {
+    enabled = false
 }
 
 

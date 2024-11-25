@@ -1,19 +1,34 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
-    id 'com.devsoap.plugin.vaadin'
-    id 'com.vaadin'
+    id 'org.springframework.boot' version '2.7.16'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'com.vaadin' version '0.14.8.1' apply false
 }
 
+group = 'org.gradle.samples'
+version = '1.0.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
+configurations {
+    compile.canBeResolved = true // workaround for Vaadin 8 plugin
+    runtime.canBeResolved = true // workaround for Vaadin 8 plugin
+
+    configureEach {
+        resolutionStrategy {
+            force 'org.jsoup:jsoup:1.15.3',
+                    'com.vaadin:vaadin-server:7.7.41',
+                    'com.vaadin:vaadin-client:7.7.41','com.vaadin:vaadin-themes:7.7.41'
+        }
+    }
+}
+
 dependencies {
     compile project(':sample-ui')
+    compile platform('com.vaadin:vaadin-bom:14.8.1')
     compile('com.vaadin:vaadin-spring-boot-starter') {
         ["com.vaadin.webjar", "org.webjars.bowergithub.insites",
          "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
@@ -26,14 +41,12 @@ dependencies {
     }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "com.vaadin:vaadin-bom:14.8.1"
-    }
-}
-
 test {
     useJUnitPlatform()
+}
+
+springBoot {
+    mainClass = 'org.gradle.samples.SpringBootDemoApplication'
 }
 
 description = 'app'
