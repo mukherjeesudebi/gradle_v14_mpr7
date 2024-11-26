@@ -99,5 +99,8 @@ bootJar {
     enabled = false
 }
 
+jar {
+    enabled = true
+}
 
 description = 'sample-ui'

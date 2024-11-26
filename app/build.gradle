@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.16'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id 'com.vaadin' version '0.14.8.1' apply false
+    id 'com.vaadin' version '0.14.8.1'
 }
 
 group = 'org.gradle.samples'
@@ -45,8 +45,21 @@ test {
     useJUnitPlatform()
 }
 
+vaadin {
+    pnpmEnable = true
+}
+
 springBoot {
     mainClass = 'org.gradle.samples.SpringBootDemoApplication'
 }
+
+task copyWebappFiles(type: Copy) {
+    println "Copying resource"
+
+    from project(':sample-ui').file('src/main/webapp/VAADIN')
+    into 'src/main/resources/VAADIN'
+}
+
+processResources.dependsOn copyWebappFiles
 
 description = 'app'
