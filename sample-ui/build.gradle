@@ -3,7 +3,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.16'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'com.devsoap.plugin.vaadin' version '2.0.0.beta2'
-    id 'com.vaadin' version '0.14.8.1'
+    id 'com.vaadin' version '0.14.8.1' apply false
 }
 
 group = 'org.gradle.samples'
@@ -90,10 +90,6 @@ dependencies {
 
 test {
     useJUnitPlatform()
-}
-
-vaadin14 {
-    pnpmEnable = true
 }
 
 bootJar {
