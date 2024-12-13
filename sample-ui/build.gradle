@@ -21,16 +21,26 @@ configurations {
 
     configureEach {
         resolutionStrategy {
-            force 'org.jsoup:jsoup:1.15.3',
+            force 'org.jsoup:jsoup:1.14.3',
                     'com.vaadin:vaadin-server:7.7.41',
                     'com.vaadin:vaadin-client:7.7.41','com.vaadin:vaadin-themes:7.7.41'
         }
     }
 }
 
+// Disable widgetset compilation as widgetset
+// is served from widgetset-module
+project.tasks.vaadinCompile.enabled = false
+project.tasks.vaadinUpdateWidgetset.enabled = false
+
+// Disable theme compilation as theme is pre-compiled
+// in another module
+project.tasks.vaadinThemeCompile.enabled = false
+project.tasks.vaadinUpdateAddonStyles.enabled = false
+
 dependencies {
     implementation project(':sample-service')
-    implementation platform('com.vaadin:vaadin-bom:14.8.1')
+    //implementation platform('com.vaadin:vaadin-bom:14.8.1')
     implementation('com.vaadin:vaadin-spring-boot-starter') {
         ["com.vaadin.webjar", "org.webjars.bowergithub.insites",
          "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
@@ -88,6 +98,12 @@ dependencies {
     }
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "com.vaadin:vaadin-bom:14.8.1"
+    }
+}
+
 test {
     useJUnitPlatform()
 }
@@ -99,5 +115,6 @@ bootJar {
 jar {
     enabled = true
 }
+
 
 description = 'sample-ui'
