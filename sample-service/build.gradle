@@ -27,7 +27,7 @@ configurations {
 }
 
 dependencies {
-    implementation platform('com.vaadin:vaadin-bom:14.8.1')
+    implementation platform('com.vaadin:vaadin-bom:14.10.8')
     implementation('com.vaadin:vaadin-spring-boot-starter') {
         ["com.vaadin.webjar", "org.webjars.bowergithub.insites",
          "org.webjars.bowergithub.polymer", "org.webjars.bowergithub.polymerelements",
