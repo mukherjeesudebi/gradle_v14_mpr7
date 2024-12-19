@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.16' apply false
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE' apply false
+    id 'com.devsoap.plugin.vaadin' version '2.0.0.beta2' apply false
+    id 'com.vaadin' version '0.14.8.1' apply false
+}
+
+project("app") {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'com.devsoap.plugin.vaadin'
+    apply plugin: 'com.vaadin'
+    apply plugin: 'war'
+    dependencies {
+        compile project(':sample-ui')
+    }
+}
+
+project("sample-ui") {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    dependencies {
+        compile project(':sample-service')
+    }
+}
+
+project("sample-service") {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+}

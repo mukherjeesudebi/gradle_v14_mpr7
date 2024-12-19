@@ -1,8 +1,8 @@
-plugins {
-    id 'java'
-    id 'org.springframework.boot' version '2.7.16'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-}
+//plugins {
+//    id 'java'
+//    id 'org.springframework.boot' version '2.7.16'
+//    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+//}
 
 group = 'org.gradle.samples'
 version = '1.0.0-SNAPSHOT'

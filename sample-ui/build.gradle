@@ -1,9 +1,9 @@
-plugins {
-    id 'java'
-    id 'org.springframework.boot' version '2.7.16'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id 'com.vaadin' version '0.14.8.1' apply false
-}
+//plugins {
+//    id 'java'
+//    id 'org.springframework.boot' version '2.7.16'
+//    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+//    id 'com.vaadin' version '0.14.8.1' apply false
+//}
 
 group = 'org.gradle.samples'
 version = '1.0.0-SNAPSHOT'
@@ -28,7 +28,7 @@ configurations {
 }
 
 dependencies {
-    implementation project(':sample-service')
+    //implementation project(':sample-service')
     //implementation platform('com.vaadin:vaadin-bom:14.8.1')
     implementation('com.vaadin:vaadin-spring-boot-starter') {
         ["com.vaadin.webjar", "org.webjars.bowergithub.insites",
