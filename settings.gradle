@@ -1,4 +1,4 @@
 rootProject.name = 'spring-boot-demo'
-include 'app', 'sample-ui' , 'sample-service'
+include 'app', 'sample-ui' , 'sample-service' , 'sample-wm' , 'sample-wm:sample-wm-service' , 'sample-wm:sample-wm-ui'
 
 
